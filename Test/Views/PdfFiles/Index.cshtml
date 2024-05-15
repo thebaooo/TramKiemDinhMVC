@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Test.Models.PdfFile>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+   
+    <a  asp-action="Upload">Thêm giấy kiểm định</a>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FilePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UploadDateTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FilePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploadDateTime)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PdfFileId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PdfFileId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PdfFileId">Delete</a>
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

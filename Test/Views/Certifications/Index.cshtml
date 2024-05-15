@@ -1,0 +1,208 @@
+﻿@model X.PagedList.IPagedList<Test.Models.Certification>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    th a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .btn-action {
+        transition: all 0.3s ease-in-out;
+        padding: 5px; /* Điều chỉnh padding cho thẻ <a> */
+    }
+
+    .btn-action:hover {
+        opacity: 0.7;
+        color: #007bff; /* Màu chữ khi hover */
+    }
+
+    .btn-action i {
+        font-size: 1rem; /* Điều chỉnh kích thước của icon */
+    }
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px; /* Có thể điều chỉnh khoảng cách giữa bảng và phân trang */
+    }
+
+.pagination-container .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination-container .pagination li {
+    margin: 0 5px;
+}
+
+.pagination-container .pagination li a {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.pagination-container .pagination li a:hover {
+    background-color: #0056b3;
+}
+
+    .exit-search {
+        color: #333; /* Màu của biểu tượng */
+        text-decoration: none; /* Loại bỏ gạch chân */
+        margin-left: 10px; /* Khoảng cách giữa biểu tượng và văn bản */
+    }
+
+        .exit-search:hover {
+            color: red; /* Màu của biểu tượng khi hover */
+        }
+
+    .search-message {
+        margin-bottom: 10px; /* Khoảng cách dưới của phần thông báo */
+        display: flex;
+    }
+
+        .search-message p {
+            margin-right: 10px; /* khoảng cách giữa phần tử p và a */
+        }
+
+</style>
+
+
+<h1>Danh sách chứng nhận trạm kiểm định</h1>
+
+<thead>
+    <tr>
+        <th>
+            <div style="display: flex;">
+                <form>
+                    <input name="searchString" type="search" aria-label="Search" class="form-control" onkeyup="searchTable()" placeholder="Tìm kiếm...">
+                    <button class="btn btn-dark" type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+        </th>
+    </tr>
+    @if (!string.IsNullOrEmpty(ViewBag.SearchMessage))
+    {
+        <div style ="display: flex;" class="search-message">
+            <p>@ViewBag.SearchMessage</p>
+            <a href="@Url.Action("Index")" class="exit-search"><i class="fa fa-times-circle"></i> Thoát khỏi tìm kiếm</a>
+        </div>
+
+    }
+
+
+</thead>
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Số Chứng chỉ", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Mã Trạm", "Index", new { sortOrder = ViewBag.StationCodeSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Ngày Kiểm tra", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Đợt", "Index", new { sortOrder = ViewBag.NoteSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Năm Kiểm tra", "Index", new { sortOrder = ViewBag.InspectionYearSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Tên Tỉnh/Thành phố", "Index", new { sortOrder = ViewBag.ProvinceNameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Thời gian Gửi", "Index", new { sortOrder = ViewBag.SentTimeSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Trạng thái", "Index", new { sortOrder = ViewBag.FilePathSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CertificateNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StationCode)
+                </td>
+                <td>
+                    @item.InspectionDate.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InspectionYear)
+                </td>
+                <td style="width: 100px;">
+                    @Html.DisplayFor(modelItem => item.ProvinceName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SentTime)
+                </td>
+                <td>
+                    @if (item.FilePath == null)
+                    {
+                        <span>Chưa có giấy CN</span>
+                    }
+                    else
+                    {
+                        <span>Có giấy CN</span>
+                    }
+                </td>
+                <td>
+                    <!-- Button Xóa -->
+                    <a asp-action="Delete" asp-route-id="@item.CertificationId" class="btn btn-danger btn-lg btn-action">
+                        <i class="fa fa-trash fa-sm"></i>
+                    </a>
+
+                    <!-- Button Xem -->
+                    <a asp-action="ViewPdf" asp-route-id="@item.CertificationId" target="_blank" class="btn btn-primary btn-lg btn-action">
+                        <i class="fa fa-circle-info fa-sm"></i>
+                    </a>
+
+                    <!-- Button Tải về -->
+                    <a asp-action="DownloadPdf" asp-route-id="@item.CertificationId" class="btn btn-success btn-lg btn-action">
+                        <i class="fa fa-download fa-sm"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter }), new PagedListRenderOptions { DisplayLinkToFirstPage = PagedListDisplayMode.Always, DisplayLinkToLastPage = PagedListDisplayMode.Always, LinkToFirstPageFormat = "<<", LinkToPreviousPageFormat = "<", LinkToNextPageFormat = ">", LinkToLastPageFormat = ">>" })
+</div>
