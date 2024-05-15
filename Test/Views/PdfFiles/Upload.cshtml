@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Upload</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="PdfFiles" asp-action="Upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="files" multiple />
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Upload</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

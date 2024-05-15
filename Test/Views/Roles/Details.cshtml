@@ -1,0 +1,25 @@
+﻿@model Test.Models.Role
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Thông tin</h1>
+
+<div>
+    <h4>Quyền</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RoleName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RoleName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.RoleId">Sửa</a> |
+    <a asp-action="Index">Danh sách quyền</a>
+</div>
